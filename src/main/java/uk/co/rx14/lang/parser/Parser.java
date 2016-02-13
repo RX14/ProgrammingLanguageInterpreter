@@ -13,7 +13,7 @@ import java.util.Stack;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SyntaxError;
 import uk.co.rx14.lang.ast.ASTNode;
-import uk.co.rx14.lang.ast.ConstNode;
+import uk.co.rx14.lang.ast.ConstNumNode;
 import uk.co.rx14.lang.ast.ExpressionNode;
 import uk.co.rx14.lang.lexer.Lexer;
 import uk.co.rx14.lang.lexer.Token;
@@ -108,7 +108,7 @@ public class Parser {
             switch (token.type) {
                 case NUMBER: {
                     BigDecimal value = new BigDecimal(token.text);
-                    astStack.push(new ConstNode(value));
+                    astStack.push(new ConstNumNode(value));
                     break;
                 }
                 case OPERATOR: {

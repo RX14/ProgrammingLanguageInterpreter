@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang.ast;
 
 import java.math.BigDecimal;
 
 /**
- *
  * @author CH14565
  */
-public class ConstNode implements ASTNode {
+public class ConstNumNode implements ASTNode {
     public final BigDecimal value;
 
-    public ConstNode(BigDecimal value) {
+    public ConstNumNode(BigDecimal value) {
         this.value = value;
     }
 
     @Override
     public String toString() {
-        return "<"+value+">";
+        return value.toString();
     }
 }
