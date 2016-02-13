@@ -24,6 +24,6 @@ public class ExpressionNode implements ASTNode {
 
     @Override
     public String toString() {
-    return "<"+lhs.toString()+" "+operator.name()+" "+rhs.toString()+">";
+    return "<"+lhs.toString()+" "+operator.string+" "+rhs.toString()+">";
     }
 }
