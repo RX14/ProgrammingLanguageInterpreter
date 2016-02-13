@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang;
 
 import java.nio.file.Path;
 import java.util.Objects;
 
 /**
- *
  * @author CH14565
  */
 public final class SourceLocation {

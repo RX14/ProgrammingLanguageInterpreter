@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang;
+
+import uk.co.rx14.lang.lexer.Lexer;
+import uk.co.rx14.lang.parser.Parser;
 
 import java.nio.file.Paths;
 import java.util.Scanner;
-import uk.co.rx14.lang.lexer.Lexer;
-import uk.co.rx14.lang.lexer.TokenType;
-import uk.co.rx14.lang.parser.Parser;
 
 /**
- *
  * @author CH14565
  */
 public class REPL {

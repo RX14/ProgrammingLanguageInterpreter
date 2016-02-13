@@ -1,17 +1,17 @@
 plugins {
-	id "java"
+    id "java"
 }
 
 sourceCompatibility = 1.8
 
 repositories {
     jcenter()
-	maven {
-		name "RX14"
-		url "http://mvn.rx14.co.uk/local/"
-	}
+    maven {
+        name "RX14"
+        url "http://mvn.rx14.co.uk/local/"
+    }
 }
 
 dependencies {
-	compile "com.github.blamevic.enumerators:JEnumerators:0.1.2"
+    compile "com.github.blamevic.enumerators:JEnumerators:0.1.2"
 }

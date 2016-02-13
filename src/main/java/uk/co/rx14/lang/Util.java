@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang;
 
 /**
- *
  * @author CH14565
  */
 public class Util {
@@ -22,7 +22,7 @@ public class Util {
 
         int startIndex = readIndex(source, lineNumStart, lineColStart);
         int endIndex = readIndex(source, startIndex, diffLine + 1, diffCol + 1);
-        
+
         return source.substring(startIndex, endIndex + 1);
     }
 

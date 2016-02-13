@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang.ast;
 
 import uk.co.rx14.lang.Operator;
 
 /**
- *
  * @author CH14565
  */
 public class ExpressionNode implements ASTNode {
@@ -24,6 +24,6 @@ public class ExpressionNode implements ASTNode {
 
     @Override
     public String toString() {
-    return "<"+lhs.toString()+" "+operator.string+" "+rhs.toString()+">";
+        return "<" + lhs.toString() + " " + operator.string + " " + rhs.toString() + ">";
     }
 }

@@ -3,13 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang.parser;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SyntaxError;
 import uk.co.rx14.lang.ast.ASTNode;
@@ -19,8 +15,12 @@ import uk.co.rx14.lang.lexer.Lexer;
 import uk.co.rx14.lang.lexer.Token;
 import uk.co.rx14.lang.lexer.TokenType;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 /**
- *
  * @author CH14565
  */
 public class Parser {

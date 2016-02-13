@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang.lexer;
 
-import java.util.Objects;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
 
+import java.util.Objects;
+
 /**
- *
  * @author CH14565
  */
 public class Token {

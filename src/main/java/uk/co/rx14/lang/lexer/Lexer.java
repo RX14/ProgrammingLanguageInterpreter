@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package uk.co.rx14.lang.lexer;
 
 import com.github.blamevic.enumerators.Enumerable;
 import com.github.blamevic.enumerators.Enumerator;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
 import uk.co.rx14.lang.SyntaxError;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author CH14565
  */
 public class Lexer implements Enumerable<Token> {
