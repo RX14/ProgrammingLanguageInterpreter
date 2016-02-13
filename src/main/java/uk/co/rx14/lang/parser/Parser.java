@@ -36,38 +36,38 @@ public class Parser {
         parseExpression();
     }
 
-    private void parseExpression() {
-        List<Token> output = new ArrayList<>();
-        Stack<Token> stack = new Stack<>();
+    private ASTNode parseExpression() {
+        List<Token> rpnOutput = new ArrayList<>();
+        Stack<Token> rpnStack = new Stack<>();
 
         loop:
         while (true) {
             Token t = nextToken();
             switch (t.type) {
                 case NUMBER:
-                    output.add(t);
+                    rpnOutput.add(t);
                     break;
                 case IDENTIFIER:
-                    stack.push(t);
+                    rpnStack.push(t);
                     break;
                 case COMMA:
-                    while (!stack.isEmpty() && stack.peek().type != TokenType.LPAREN) {
-                        output.add(stack.pop());
+                    while (!rpnStack.isEmpty() && rpnStack.peek().type != TokenType.LPAREN) {
+                        rpnOutput.add(rpnStack.pop());
                     }
-                    if (stack.isEmpty() || stack.peek().type != TokenType.LPAREN) {
+                    if (rpnStack.isEmpty() || rpnStack.peek().type != TokenType.LPAREN) {
                         fail("Mismatched parentheses");
                     }
                     break;
                 case OPERATOR:
-                    while (!stack.isEmpty()) {
-                        Token t2 = stack.peek();
+                    while (!rpnStack.isEmpty()) {
+                        Token t2 = rpnStack.peek();
 
                         if (t2.type == TokenType.OPERATOR) {
                             Operator o1 = t.operator;
                             Operator o2 = t2.operator;
                             if (o1.leftAssociative && o1.precedence <= o2.precedence
-                                    || o1.rightAssociative && o1.precedence < o2.precedence) {
-                                output.add(stack.pop());
+                                || o1.rightAssociative && o1.precedence < o2.precedence) {
+                                rpnOutput.add(rpnStack.pop());
                             } else {
                                 break;
                             }
@@ -76,35 +76,37 @@ public class Parser {
                         }
                     }
 
-                    stack.push(t);
+                    rpnStack.push(t);
                     break;
                 case LPAREN:
-                    stack.push(t);
+                    rpnStack.push(t);
                     break;
                 case RPAREN:
-                    while (!stack.isEmpty() && stack.peek().type != TokenType.LPAREN) {
-                        output.add(stack.pop());
+                    while (!rpnStack.isEmpty() && rpnStack.peek().type != TokenType.LPAREN) {
+                        rpnOutput.add(rpnStack.pop());
                     }
 
-                    if (stack.isEmpty()) {
+                    if (rpnStack.isEmpty()) {
                         fail("Mismatched parentheses");
                     }
 
-                    Token maybeParen = stack.pop();
-                    if (stack.peek() != null && stack.peek().type == TokenType.IDENTIFIER) {
-                        output.add(stack.pop());
+                    Token maybeParen = rpnStack.pop();
+                    if (rpnStack.peek() != null && rpnStack.peek().type == TokenType.IDENTIFIER) {
+                        rpnOutput.add(rpnStack.pop());
                     }
                     break;
                 default:
-                    while (!stack.isEmpty()) {
-                        output.add(stack.pop());
+                    while (!rpnStack.isEmpty()) {
+                        rpnOutput.add(rpnStack.pop());
                     }
                     break loop;
             }
         }
 
+        System.out.println("RPN: " + rpnOutput);
+
         Stack<ASTNode> astStack = new Stack<>();
-        for (Token token : output) {
+        for (Token token : rpnOutput) {
             switch (token.type) {
                 case NUMBER: {
                     BigDecimal value = new BigDecimal(token.text);
@@ -119,7 +121,15 @@ public class Parser {
             }
         }
 
-        System.out.println(Arrays.toString(astStack.toArray()));
+        if (astStack.size() != 1) {
+            fail("Failed to convert rpnOutput to astStack. astStack: " + astStack + " rpnOutput: " + rpnOutput);
+        }
+
+        ASTNode exprNode = astStack.pop();
+
+        System.out.println("AST: " + exprNode);
+
+        return exprNode;
     }
 
     private void fail(String msg) {
