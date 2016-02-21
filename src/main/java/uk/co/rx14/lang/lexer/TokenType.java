@@ -14,5 +14,6 @@ public enum TokenType {
     OPERATOR,
     LPAREN, RPAREN, COMMA,
     IDENTIFIER,
-    EOF;
+    NEWLINE,
+    EOF
 }

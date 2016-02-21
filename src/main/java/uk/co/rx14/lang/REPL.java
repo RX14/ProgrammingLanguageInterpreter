@@ -34,7 +34,12 @@ public class REPL {
     }
 
     static void run(String line) {
-        Lexer l = new Lexer(line, Paths.get("repl"));
-        new Parser(l).parse();
+        line = Util.normaliseSource(line);
+        try {
+            Lexer l = new Lexer(line, Paths.get("repl"));
+            new Parser(l).parse();
+        } catch (SyntaxError s) {
+            s.printStackTrace(System.out);
+        }
     }
 }

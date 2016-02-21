@@ -99,6 +99,9 @@ public class Lexer implements Enumerable<Token> {
                 }
                 break parsing;
             }
+            case '\n':
+                token.type = TokenType.NEWLINE;
+                break parsing;
             case '\0':
                 token.type = TokenType.EOF;
                 break parsing;
