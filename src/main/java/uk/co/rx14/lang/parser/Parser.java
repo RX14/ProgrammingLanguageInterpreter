@@ -137,9 +137,7 @@ public class Parser {
                 throw new AssertionError("Failed to parse expression (astStack=" + astStack.toString() + ", operatorStack=" + operatorStack.toString() + ", currentLine=" + getCurrentLine() + ")");
             }
 
-            ASTNode node = astStack.pop();
-            System.out.println("AST: " + node);
-            return node;
+            return astStack.pop();
         }
 
         private void popOperator() {

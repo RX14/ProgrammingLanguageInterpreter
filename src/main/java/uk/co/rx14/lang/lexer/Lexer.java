@@ -124,7 +124,6 @@ public class Lexer implements Enumerable<Token> {
         resetState();
         nextChar();
 
-        System.out.println("Token parsed: " + parsedToken.toString() + "(" + parsedToken.start.toString() + " - " + parsedToken.end.toString() + ")");
         return parsedToken;
     }
 
@@ -137,6 +136,12 @@ public class Lexer implements Enumerable<Token> {
             t = nextToken();
             tokens.add(t);
         }
+
+        System.out.println("Tokens parsed:");
+        for (Token tok : tokens) {
+            System.out.println(tok.toString() + "(" + tok.start.toString() + " - " + tok.end.toString() + ")");
+        }
+        System.out.println();
 
         return tokens;
     }
