@@ -140,11 +140,21 @@ public class Lexer implements Enumerable<Token> {
             tokens.add(t);
         }
 
+        //region Debug
         System.out.println("Tokens parsed:");
         for (Token tok : tokens) {
-            System.out.println(tok.toString() + "(" + tok.start.toString() + " - " + tok.end.toString() + ")");
+            // Don't print range if start is the same as end
+            String posPart;
+            if (tok.start.toString().equals(tok.end.toString())) {
+                posPart = tok.start.toString();
+            } else {
+                posPart = tok.start.toString() + " - " + tok.end.toString();
+            }
+
+            System.out.println(tok.toString() + " (" + posPart + ")");
         }
         System.out.println();
+        //endregion
 
         return tokens;
     }
