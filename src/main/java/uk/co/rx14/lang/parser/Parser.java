@@ -58,13 +58,16 @@ public class Parser {
                 Token token = currentToken;
                 switch (token.type) {
                     case NUMBER:
-                        assertLast(TokenType.OPERATOR, "Unexpected number");
+                        // Two numbers cannot occur consecutively
+                        assertNotLast(TokenType.NUMBER, "Unexpected number");
 
                         BigDecimal value = new BigDecimal(token.text);
                         astStack.push(new ConstNumNode(value));
                         break;
                     case IDENTIFIER:
-                        assertLast(TokenType.OPERATOR, "Unexpected ");
+                        // Two numbers cannot occur consecutively
+                        assertNotLast(TokenType.IDENTIFIER, "Unexpected identifier");
+
                         if (peekToken().type == TokenType.LPAREN) {
                             // Must be function
                             astStack.push(parseFunction());
@@ -124,6 +127,10 @@ public class Parser {
                         break loop;
                 }
                 nextToken();
+            }
+
+            if (astStack.size() == 0) {
+                return null;
             }
 
             if (astStack.size() != 1) {
