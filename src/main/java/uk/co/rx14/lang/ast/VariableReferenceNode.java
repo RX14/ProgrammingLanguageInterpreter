@@ -1,9 +1,9 @@
 package uk.co.rx14.lang.ast;
 
-public class VariableReference implements ASTNode {
+public class VariableReferenceNode implements ASTNode {
     public final String variableName;
 
-    public VariableReference(String variableName) {
+    public VariableReferenceNode(String variableName) {
         this.variableName = variableName;
     }
 

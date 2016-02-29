@@ -109,7 +109,7 @@ public class Parser {
                             astStack.push(parseFunction());
                         } else {
                             // Must be an identifier
-                            astStack.push(new VariableReference(token.text));
+                            astStack.push(new VariableReferenceNode(token.text));
                         }
                         break;
                     case OPERATOR:
