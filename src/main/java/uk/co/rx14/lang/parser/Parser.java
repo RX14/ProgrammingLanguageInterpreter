@@ -166,10 +166,6 @@ public class Parser {
                 nextToken();
             }
 
-            if (astStack.size() == 0) {
-                return null;
-            }
-
             if (astStack.size() != 1) {
                 throw new AssertionError("Failed to parse expression (astStack=" + astStack.toString() + ", operatorStack=" + operatorStack.toString() + ", currentLine=" + getCurrentLine() + ")");
             }
