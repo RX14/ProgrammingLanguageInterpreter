@@ -6,6 +6,8 @@
 
 package uk.co.rx14.lang;
 
+import uk.co.rx14.lang.ast.ASTNode;
+import uk.co.rx14.lang.interpreter.Interpreter;
 import uk.co.rx14.lang.lexer.Lexer;
 import uk.co.rx14.lang.parser.Parser;
 
@@ -38,7 +40,9 @@ public class REPL {
             line = Util.normaliseSource(line);
             try {
                 Lexer l = new Lexer(line, Paths.get("repl"));
-                System.out.println("AST: " + new Parser(l).parse());
+                ASTNode node = new Parser(l).parse();
+                System.out.println("AST: " + node);
+                new Interpreter().run(node);
             } catch (SyntaxError s) {
                 s.printStackTrace(System.out);
             }
