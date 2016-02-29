@@ -59,8 +59,7 @@ public class Parser {
             default:
                 fail("Unknown token");
         }
-        fail("Impossible");
-        return null;
+        throw new AssertionError("Impossible");
     }
 
     private ASTNode parseAssignment() {
