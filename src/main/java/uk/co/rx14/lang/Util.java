@@ -92,4 +92,26 @@ public class Util {
 
         return source;
     }
+
+    public static String debugStr(String string) {
+        StringBuilder sb = new StringBuilder(string.length() + 16);
+        for (char c : string.toCharArray()) {
+            switch (c) {
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    sb.append(c);
+                    break;
+            }
+        }
+
+        return sb.toString();
+    }
 }

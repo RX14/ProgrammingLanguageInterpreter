@@ -8,6 +8,7 @@ package uk.co.rx14.lang.lexer;
 
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
+import uk.co.rx14.lang.Util;
 
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return type.name() + (operator != null ? " (" + operator.name() + ")" : "") + ": '" + text + "'";
+        return type.name() + (operator != null ? " (" + operator.name() + ")" : "") + ": '" + Util.debugStr(text) + "'";
     }
 
     public static class Builder {
