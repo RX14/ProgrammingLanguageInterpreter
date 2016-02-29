@@ -1,8 +1,14 @@
 plugins {
     id "java"
+    id "application"
 }
 
 sourceCompatibility = 1.8
+mainClassName = "uk.co.rx14.lang.REPL"
+
+run{
+    standardInput = System.in
+}
 
 repositories {
     jcenter()
