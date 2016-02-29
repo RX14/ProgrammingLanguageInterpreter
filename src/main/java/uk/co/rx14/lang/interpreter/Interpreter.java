@@ -1,8 +1,6 @@
 package uk.co.rx14.lang.interpreter;
 
-import uk.co.rx14.lang.ast.ASTNode;
-import uk.co.rx14.lang.ast.ConstNumNode;
-import uk.co.rx14.lang.ast.ExpressionNode;
+import uk.co.rx14.lang.ast.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -31,6 +29,10 @@ public class Interpreter {
             val = ((ConstNumNode) node).value;
         } else if (c == ExpressionNode.class) {
             val = runExpressionNode(node);
+        } else if (c == AssignmentNode.class) {
+            val = runAssignmentNode(node);
+        } else if (c == VariableReferenceNode.class) {
+            val = runVariableReferenceNode(node);
         } else {
             throw new IllegalArgumentException("Not numeric.");
         }
@@ -39,9 +41,8 @@ public class Interpreter {
     }
 
     private BigDecimal runExpressionNode(ASTNode node) {
-        assertType(node, ExpressionNode.class);
+        ExpressionNode expr = assertType(node, ExpressionNode.class);
 
-        ExpressionNode expr = (ExpressionNode) node;
         BigDecimal lhs = runNumeric(expr.lhs);
         BigDecimal rhs = runNumeric(expr.rhs);
 
@@ -61,8 +62,29 @@ public class Interpreter {
         }
     }
 
-    private void assertType(ASTNode node, Class clazz) {
-        if (node.getClass() != clazz) {
+    private BigDecimal runAssignmentNode(ASTNode node) {
+        AssignmentNode ass = assertType(node, AssignmentNode.class);
+        BigDecimal val = runNumeric(ass.rhs);
+
+        ctx.put(ass.variableName, val);
+        return val;
+    }
+
+    private BigDecimal runVariableReferenceNode(ASTNode node) {
+        VariableReferenceNode var = assertType(node, VariableReferenceNode.class);
+        BigDecimal val = ctx.get(var.variableName);
+
+        if (val == null) {
+            throw new RuntimeException("Variable " + var.variableName + " is undefined");
+        }
+
+        return val;
+    }
+
+    private <T extends ASTNode> T assertType(ASTNode node, Class<T> clazz) {
+        if (clazz.isAssignableFrom(node.getClass())) {
+            return (T) node;
+        } else {
             throw new AssertionError("Node is not " + clazz.getName());
         }
     }
