@@ -18,9 +18,10 @@ import java.util.Scanner;
  * @author CH14565
  */
 public class REPL {
-    
+
+    private static final Interpreter interpreter = new Interpreter();
     static Scanner in = new Scanner(System.in);
-    
+
     static String prompt() {
         System.out.print("> ");
         return in.nextLine();
@@ -42,7 +43,7 @@ public class REPL {
                 Lexer l = new Lexer(line, Paths.get("repl"));
                 ASTNode node = new Parser(l).parse();
                 System.out.println("AST: " + node);
-                new Interpreter().run(node);
+                interpreter.run(node);
             } catch (SyntaxError s) {
                 s.printStackTrace(System.out);
             }
