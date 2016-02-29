@@ -77,6 +77,8 @@ public class Util {
     }
 
     public static String normaliseSource(String source) {
+        if (source.length() == 0) throw new IllegalArgumentException("Source cannot be 0 length");
+
         // Replace tabs with 4 spaces
         source = source.replace("\t", "    ");
 
