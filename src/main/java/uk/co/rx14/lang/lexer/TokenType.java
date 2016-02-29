@@ -12,7 +12,7 @@ package uk.co.rx14.lang.lexer;
 public enum TokenType {
     NUMBER,
     OPERATOR,
-    LPAREN, RPAREN, COMMA,
+    LPAREN, RPAREN, COMMA, EQUALS,
     IDENTIFIER,
     NEWLINE,
     EOF

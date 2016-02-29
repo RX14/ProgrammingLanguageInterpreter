@@ -9,10 +9,7 @@ package uk.co.rx14.lang.parser;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SyntaxError;
 import uk.co.rx14.lang.Util;
-import uk.co.rx14.lang.ast.ASTNode;
-import uk.co.rx14.lang.ast.ConstNumNode;
-import uk.co.rx14.lang.ast.ExpressionNode;
-import uk.co.rx14.lang.ast.VariableReference;
+import uk.co.rx14.lang.ast.*;
 import uk.co.rx14.lang.lexer.Lexer;
 import uk.co.rx14.lang.lexer.Token;
 import uk.co.rx14.lang.lexer.TokenType;
@@ -43,12 +40,52 @@ public class Parser {
         this(lexer.tokenize());
     }
 
-    public void parse() {
-        new ExpressionParser().parseExpression();
+    public ASTNode parse() {
+        switch (currentToken.type) {
+            case IDENTIFIER:
+                // Could be start of expression or assignment
+                switch(peekToken().type) {
+                    case EQUALS:
+                        // Assignment
+                        return parseAssignment();
+                    default:
+                        // Expression
+                        return new ExpressionParser().parseExpression();
+                }
+            case NUMBER:
+            case LPAREN:
+                // Expression
+                return new ExpressionParser().parseExpression();
+            default:
+                fail("Unknown token");
+        }
+        fail("Impossible");
+        return null;
+    }
+
+    private ASTNode parseAssignment() {
+        assertCurrent(TokenType.IDENTIFIER, "Assignment must start with an identifier");
+        String name = currentToken.text;
+
+        assertNext(TokenType.EQUALS, "Expected assignment operator");
+
+        nextToken();
+        ASTNode rhs = parseExpression();
+
+        return new AssignmentNode(name, rhs);
+    }
+
+    private ASTNode parseFunction() {
+        throw new UnsupportedOperationException("Function parsing not yet implemented");
+
+    }
+
+    private ASTNode parseExpression() {
+        return new ExpressionParser().parseExpression();
     }
 
     class ExpressionParser {
-        Stack<ASTNode> astStack  = new Stack<>();
+        Stack<ASTNode> astStack = new Stack<>();
         Stack<Token> operatorStack = new Stack<>();
 
         private ASTNode parseExpression() {
@@ -161,11 +198,6 @@ public class Parser {
         }
     }
 
-    private ASTNode parseFunction() {
-        throw new UnsupportedOperationException("Function parsing not yet implemented");
-
-    }
-
     private void fail(Token t, String msg) {
         throw new SyntaxError(t, msg);
     }
@@ -193,6 +225,12 @@ public class Parser {
         }
 
         return tokens[index + 1];
+    }
+
+    private void assertCurrent(TokenType type, String errorMessage) {
+        if (currentToken.type != type) {
+            fail(errorMessage);
+        }
     }
 
     private void assertNext(TokenType type, String errorMessage) {

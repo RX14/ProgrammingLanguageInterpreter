@@ -81,6 +81,9 @@ public class Lexer implements Enumerable<Token> {
             case ',':
                 token.type = TokenType.COMMA;
                 break parsing;
+            case '=':
+                token.type = TokenType.EQUALS;
+                break parsing;
             case '1':
             case '2':
             case '3':
