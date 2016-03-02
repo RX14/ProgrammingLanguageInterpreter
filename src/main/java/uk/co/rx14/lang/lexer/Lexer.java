@@ -10,6 +10,7 @@ import org.pmw.tinylog.Logger;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
 import uk.co.rx14.lang.SyntaxError;
+import uk.co.rx14.lang.Util;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class Lexer {
 
     public Lexer(String source, Path sourcePath) {
         this(source.toCharArray(), sourcePath);
+    }
+
+    public Lexer(Path sourcePath) {
+        this(Util.readFile(sourcePath), sourcePath);
     }
 
     public Token nextToken() {

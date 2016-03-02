@@ -6,6 +6,10 @@
 
 package uk.co.rx14.lang;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * @author CH14565
  */
@@ -113,5 +117,13 @@ public class Util {
         }
 
         return sb.toString();
+    }
+
+    public static String readFile(Path file) {
+        try {
+            return new String(Files.readAllBytes(file));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
