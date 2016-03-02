@@ -6,8 +6,6 @@
 
 package uk.co.rx14.lang.lexer;
 
-import com.github.blamevic.enumerators.Enumerable;
-import com.github.blamevic.enumerators.Enumerator;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
 import uk.co.rx14.lang.SyntaxError;
@@ -19,7 +17,7 @@ import java.util.List;
 /**
  * @author CH14565
  */
-public class Lexer implements Enumerable<Token> {
+public class Lexer {
 
     // These variables are not cleared every token
     private final char[] source;
@@ -219,27 +217,5 @@ public class Lexer implements Enumerable<Token> {
 
     private boolean isNumber(char c) {
         return '0' <= c && c <= '9';
-    }
-
-    @Override
-    public Enumerator<Token> enumerator() {
-        return new Enumerator<Token>() {
-            Token current = nextToken();
-
-            @Override
-            public Token current() {
-                return current;
-            }
-
-            @Override
-            public boolean moveNext() {
-                if (current.type == TokenType.EOF) {
-                    return false;
-                }
-
-                current = nextToken();
-                return true;
-            }
-        };
     }
 }

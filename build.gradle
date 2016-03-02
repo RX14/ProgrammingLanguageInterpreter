@@ -19,5 +19,4 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.blamevic.enumerators:JEnumerators:0.1.2"
 }
