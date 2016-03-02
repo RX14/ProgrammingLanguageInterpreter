@@ -19,4 +19,5 @@ repositories {
 }
 
 dependencies {
+    compile "org.tinylog:tinylog:1.0.3"
 }

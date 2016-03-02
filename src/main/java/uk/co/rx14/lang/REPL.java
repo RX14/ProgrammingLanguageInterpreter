@@ -6,6 +6,7 @@
 
 package uk.co.rx14.lang;
 
+import org.pmw.tinylog.Logger;
 import uk.co.rx14.lang.ast.ASTNode;
 import uk.co.rx14.lang.interpreter.Interpreter;
 import uk.co.rx14.lang.lexer.Lexer;
@@ -41,11 +42,11 @@ public class REPL {
             line = Util.normaliseSource(line);
             try {
                 Lexer l = new Lexer(line, Paths.get("repl"));
-                ASTNode node = new Parser(l).parse();
-                System.out.println("AST: " + node);
-                interpreter.run(node);
+                ASTNode rootNode = new Parser(l).parse();
+                Logger.debug("AST: {}", rootNode);
+                System.out.println("=> " + interpreter.runExpression(rootNode).toString());
             } catch (SyntaxError s) {
-                s.printStackTrace(System.out);
+                Logger.error(s);
             }
         }
     }

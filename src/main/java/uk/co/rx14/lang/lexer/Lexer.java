@@ -6,6 +6,7 @@
 
 package uk.co.rx14.lang.lexer;
 
+import org.pmw.tinylog.Logger;
 import uk.co.rx14.lang.Operator;
 import uk.co.rx14.lang.SourceLocation;
 import uk.co.rx14.lang.SyntaxError;
@@ -125,6 +126,20 @@ public class Lexer {
         resetState();
         nextChar();
 
+        //region Debug
+        {
+            // Don't print range if start is the same as end
+            String posPart;
+            if (parsedToken.start.toString().equals(parsedToken.end.toString())) {
+                posPart = parsedToken.start.toString();
+            } else {
+                posPart = parsedToken.start.toString() + " - " + parsedToken.end.toString();
+            }
+
+            Logger.debug("Parsed Token: {} ({})", parsedToken, posPart);
+        }
+        //endregion Debug
+
         return parsedToken;
     }
 
@@ -137,22 +152,6 @@ public class Lexer {
             t = nextToken();
             tokens.add(t);
         }
-
-        //region Debug
-        System.out.println("Tokens parsed:");
-        for (Token tok : tokens) {
-            // Don't print range if start is the same as end
-            String posPart;
-            if (tok.start.toString().equals(tok.end.toString())) {
-                posPart = tok.start.toString();
-            } else {
-                posPart = tok.start.toString() + " - " + tok.end.toString();
-            }
-
-            System.out.println(tok.toString() + " (" + posPart + ")");
-        }
-        System.out.println();
-        //endregion
 
         return tokens;
     }

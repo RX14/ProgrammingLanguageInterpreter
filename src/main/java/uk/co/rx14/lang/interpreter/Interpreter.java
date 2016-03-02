@@ -10,18 +10,15 @@ public class Interpreter {
     private final Map<String, BigDecimal> ctx = new HashMap<>();
 
     public void run(ASTNode node) {
-        String val;
-
         try {
-            val = runNumeric(node).toString();
+            runExpression(node);
         } catch (IllegalArgumentException ignored) {
             throw new IllegalArgumentException("wat");
         }
 
-        System.out.println("VAL: " + val);
     }
 
-    private BigDecimal runNumeric(ASTNode node) {
+    public BigDecimal runExpression(ASTNode node) {
         BigDecimal val;
         Class c = node.getClass();
 
@@ -43,8 +40,8 @@ public class Interpreter {
     private BigDecimal runExpressionNode(ASTNode node) {
         ExpressionNode expr = assertType(node, ExpressionNode.class);
 
-        BigDecimal lhs = runNumeric(expr.lhs);
-        BigDecimal rhs = runNumeric(expr.rhs);
+        BigDecimal lhs = runExpression(expr.lhs);
+        BigDecimal rhs = runExpression(expr.rhs);
 
         switch (expr.operator) {
             case ADD:
@@ -64,7 +61,7 @@ public class Interpreter {
 
     private BigDecimal runAssignmentNode(ASTNode node) {
         AssignmentNode ass = assertType(node, AssignmentNode.class);
-        BigDecimal val = runNumeric(ass.rhs);
+        BigDecimal val = runExpression(ass.rhs);
 
         ctx.put(ass.variableName, val);
         return val;
