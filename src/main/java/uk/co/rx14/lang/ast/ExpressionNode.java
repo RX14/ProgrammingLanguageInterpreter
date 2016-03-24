@@ -7,6 +7,8 @@
 package uk.co.rx14.lang.ast;
 
 import uk.co.rx14.lang.Operator;
+import uk.co.rx14.lang.ast.type.NumberType;
+import uk.co.rx14.lang.ast.type.Type;
 
 /**
  * @author CH14565
@@ -25,5 +27,10 @@ public class ExpressionNode implements ASTNode {
     @Override
     public String toString() {
         return "(" + lhs.toString() + " " + operator.string + " " + rhs.toString() + ")";
+    }
+
+    @Override
+    public Type getType() {
+        return NumberType.INSTANCE;
     }
 }

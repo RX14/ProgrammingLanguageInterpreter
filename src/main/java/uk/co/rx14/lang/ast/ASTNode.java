@@ -6,8 +6,11 @@
 
 package uk.co.rx14.lang.ast;
 
+import uk.co.rx14.lang.ast.type.Type;
+
 /**
  * @author CH14565
  */
 public interface ASTNode {
+    Type getType();
 }

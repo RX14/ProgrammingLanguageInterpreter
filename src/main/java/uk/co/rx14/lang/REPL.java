@@ -42,7 +42,7 @@ public class REPL {
             line = Util.normaliseSource(line);
             try {
                 Lexer l = new Lexer(line, Paths.get("repl"));
-                ASTNode rootNode = new Parser(l).parse();
+                ASTNode rootNode = new Parser(l).parseTopLevel();
                 Logger.debug("AST: {}", rootNode);
                 System.out.println("=> " + interpreter.runExpression(rootNode).toString());
             } catch (SyntaxError s) {

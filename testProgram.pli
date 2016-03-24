@@ -1,1 +1,5 @@
-10 + 12 /3
+def func
+  12
+end
+
+func()

@@ -14,6 +14,7 @@ public enum TokenType {
     OPERATOR,
     LPAREN, RPAREN, COMMA, EQUALS,
     IDENTIFIER,
+    DEF, END,
     NEWLINE,
     EOF
 }

@@ -26,6 +26,9 @@ public class Parser {
     private int index = 0;
     private Token currentToken;
 
+    private final ModuleNode rootModule = new ModuleNode(null);
+    private Context context = rootModule;
+
     public Parser(Token[] tokens) {
         this.tokens = tokens.clone();
         this.currentToken = tokens[index];
@@ -40,30 +43,64 @@ public class Parser {
         this(lexer.tokenize());
     }
 
-    public ASTNode parse() {
-        switch (currentToken.type) {
-            case IDENTIFIER:
-                // Could be start of expression or assignment
-                switch(peekToken().type) {
-                    case EQUALS:
-                        // Assignment
-                        return parseAssignment();
-                    default:
-                        // Expression
-                        return new ExpressionParser().parseExpression();
-                }
-            case NUMBER:
-            case LPAREN:
-                // Expression
-                return new ExpressionParser().parseExpression();
-            default:
-                fail("Unknown token");
+    public ModuleNode parseTopLevel() {
+        while (true) {
+            skipNewlines();
+            switch (currentToken.type) {
+                case DEF:
+                    parseFunctionDefintion();
+                    break;
+                case IDENTIFIER:
+                    // Could be start of expression or assignment
+                    switch(peekToken().type) {
+                        case EQUALS:
+                            // Assignment
+                            parseAssignment();
+                            break;
+                        default:
+                            // Expression
+                            parseExpression();
+                            break;
+                    }
+                    break;
+                case NUMBER:
+                case LPAREN:
+                    // Expression
+                    parseExpression();
+                    break;
+                case EOF:
+                    return rootModule;
+                default:
+                    fail("Unknown token");
+            }
         }
-        throw new AssertionError("Impossible");
+    }
+
+    private ASTNode parseFunctionDefintion() {
+        assertCurrent(TokenType.DEF, "Function definition called but no def - possible compiler bug");
+        assertNext(TokenType.IDENTIFIER, "Expected function name");
+        String name = currentToken.text;
+        // TODO: parse args
+        skipNewlines();
+
+        ASTNode body = parseBasicBlock();
+
+        skipNewlines();
+        assertCurrent(TokenType.END, "Expected token 'end'");
+        nextToken();
+
+        FunctionNode func = new FunctionNode(name, body);
+        context.getContext().put(name, func);
+        return func;
+    }
+
+    private ASTNode parseBasicBlock() {
+        // TODO: parse basic block
+        return parseExpression();
     }
 
     private ASTNode parseAssignment() {
-        assertCurrent(TokenType.IDENTIFIER, "Assignment must start with an identifier");
+        assertCurrent(TokenType.IDENTIFIER, "Assignment called but no identifier - possible parser bug");
         String name = currentToken.text;
 
         assertNext(TokenType.EQUALS, "Expected assignment operator");
@@ -74,9 +111,14 @@ public class Parser {
         return new AssignmentNode(name, rhs);
     }
 
-    private ASTNode parseFunction() {
-        throw new UnsupportedOperationException("Function parsing not yet implemented");
+    private ASTNode parseFunctionCall() {
+        assertCurrent(TokenType.IDENTIFIER, "Function call called but no identifier - possible parser bug");
+        String name = currentToken.text;
+        //TODO: support args
+        assertNext(TokenType.LPAREN, "Expected parentheses");
+        assertNext(TokenType.RPAREN, "Expected parentheses");
 
+        return new FunctionCallNode(context, name);
     }
 
     private ASTNode parseExpression() {
@@ -106,10 +148,10 @@ public class Parser {
 
                         if (peekToken().type == TokenType.LPAREN) {
                             // Must be function
-                            astStack.push(parseFunction());
+                            astStack.push(parseFunctionCall());
                         } else {
                             // Must be an identifier
-                            astStack.push(new VariableReferenceNode(token.text));
+                            astStack.push(new VariableReferenceNode(context, token.text));
                         }
                         break;
                     case OPERATOR:
@@ -245,6 +287,16 @@ public class Parser {
         if (index == 0) return;
         if (tokens[index - 1].type == type) {
             fail(errorMessage);
+        }
+    }
+
+    private void skipNewlines() {
+        if (currentToken.type != TokenType.NEWLINE
+            && peekToken().type == TokenType.NEWLINE) {
+            nextToken();
+        }
+        while (currentToken.type == TokenType.NEWLINE) {
+            nextToken();
         }
     }
 }

@@ -6,6 +6,9 @@
 
 package uk.co.rx14.lang.ast;
 
+import uk.co.rx14.lang.ast.type.NumberType;
+import uk.co.rx14.lang.ast.type.Type;
+
 import java.math.BigDecimal;
 
 /**
@@ -21,5 +24,10 @@ public class ConstNumNode implements ASTNode {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public Type getType() {
+        return NumberType.INSTANCE;
     }
 }

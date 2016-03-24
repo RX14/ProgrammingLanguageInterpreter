@@ -88,6 +88,12 @@ public class Lexer {
             case '=':
                 token.type = TokenType.EQUALS;
                 break parsing;
+            case 'd':
+                keyword("def", TokenType.DEF);
+                break parsing;
+            case 'e':
+                keyword("end", TokenType.END);
+                break parsing;
             case '1':
             case '2':
             case '3':
@@ -146,6 +152,29 @@ public class Lexer {
         //endregion Debug
 
         return parsedToken;
+    }
+
+    private void keyword(String keyword, TokenType type) {
+        char peek = peekChar();
+        int idx = 1;
+        while (keyword.charAt(idx) == peek) {
+            nextChar();
+
+            if (idx == keyword.length() - 1) {
+                token.type = type;
+                return;
+            }
+
+            peek = peekChar();
+            idx++;
+        }
+
+        // Identifier
+        token.type = TokenType.IDENTIFIER;
+        while (isNumber(peek) || isLetter(peek)) {
+            nextChar();
+            peek = peekChar();
+        }
     }
 
     public List<Token> tokenize() {
